@@ -142,15 +142,17 @@ function loveframes.util.GetDirectoryContents(dir, t)
 	local dirs = {}
 	
 	for k, v in ipairs(files) do
-		local isdir = love.filesystem.isDirectory(dir.. "/" ..v)
-		if isdir == true then
-			table.insert(dirs, dir.. "/" ..v)
-		else
-			local parts = loveframes.util.SplitString(v, "([.])")
-			local extension = parts[#parts]
-			parts[#parts] = nil
-			local name = table.concat(parts)
-			table.insert(t, {path = dir, fullpath = dir.. "/" ..v, requirepath = dir .. "." ..name, name = name, extension = extension})
+		if string.sub(v, 1,2) ~= "._" then
+			local isdir = love.filesystem.isDirectory(dir.. "/" ..v)
+			if isdir == true then
+				table.insert(dirs, dir.. "/" ..v)
+			else
+				local parts = loveframes.util.SplitString(v, "([.])")
+				local extension = parts[#parts]
+				parts[#parts] = nil
+				local name = table.concat(parts)
+				table.insert(t, {path = dir, fullpath = dir.. "/" ..v, requirepath = dir .. "." ..name, name = name, extension = extension})
+			end
 		end
 	end
 	
